@@ -15,7 +15,7 @@ export enum PresenterComponent {
   }
 
   export enum MessageType {
-    GameIndex,
+    GameId,
     AddPlayer,
     SubmitAssignmentDoodle,
     SubmitFirstGuess,

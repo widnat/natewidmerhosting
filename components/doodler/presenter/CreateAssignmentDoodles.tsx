@@ -20,7 +20,7 @@ export default function CreateAssignmentDoodles({ action, players }: Props) {
 			if (!player.assignment?.drawingURL) readyToContinue = false;
 
 			return (
-				<div key={player.id}>
+				<div key={player.connectionId}>
 					{player.assignment?.drawingURL && (
 						<div className="m-3">
 							<img

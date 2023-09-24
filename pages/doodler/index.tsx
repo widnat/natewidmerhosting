@@ -12,6 +12,7 @@ import Results from "@/components/doodler/presenter/Results";
 import { PresenterComponent, MessageType } from "@/enums/doodler";
 
 export default function Doodler() {
+	const sendMessageAction = 'sendmessage';
 	const IS_WEB_PRODUCTION = true;
 	const IS_APP_PRODUCTION = true;
 	const WEB_ADDRESS = 'https://natewidmer.com';
@@ -26,7 +27,7 @@ export default function Doodler() {
 	const serverAddress = WS_ADDRESS
 	const [options, setOptions] = useState(new Array<string>());
 	var hasConstructed = false;
-	const [gameIndex, setGameIndex] = useState(-1);
+	const [gameId, setGameId] = useState('-1');
 	const newPlayerLink = `${WEB_ADDRESS}/doodler/addPlayer`
 	const [playerAssignmentIndex, setPlayerAssignmentIndex] = useState(-1);
 	const [component, setComponent] = useState(PresenterComponent.StartGame);
@@ -49,11 +50,13 @@ export default function Doodler() {
 
 	function handleServerMessage(msg: string) {
 		const message = JSON.parse(msg) as Message;
-		if (message.type === MessageType.GameIndex) {
-			setGameIndex(Number(message.value));
-		} else if (message.type === MessageType.AddPlayer) {
+		if (message.type == MessageType.GameId || gameId !== message.recipientConnectionId) {
+			setGameId(message.recipientConnectionId);
+		}
+
+		if (message.type === MessageType.AddPlayer) {
 			const addPlayerMessage = JSON.parse(message.value) as AddPlayerMessage;
-			addPlayer(addPlayerMessage);
+			addPlayer(addPlayerMessage, message.recipientConnectionId);
 		} else if (message.type === MessageType.SubmitAssignmentDoodle) {
 			submitAssignmentDoodle(message);
 		} else if (message.type === MessageType.SubmitFirstGuess) {
@@ -63,9 +66,9 @@ export default function Doodler() {
 		}
 	}
 
-	function addPlayer(message : AddPlayerMessage) {
+	function addPlayer(message : AddPlayerMessage, playerConnectionId : string) {
 		var newPlayer = {
-			id: nextNewPlayerIndex.current,
+			connectionId: playerConnectionId,
 			name: message.name,
 			pictureURL: message.imageUrl,
 			score: 0,
@@ -79,44 +82,44 @@ export default function Doodler() {
 	function submitAssignmentDoodle(message : Message) {
 		var players = new Array<Player>();
 		playersRef.current.forEach((player) => {
-			if (player.id === message.playerId)
+			if (player.connectionId === message.recipientConnectionId)
 				player.assignment.drawingURL = message.value;
 
 			players.push(player);
 		});
 
 		setPlayers(players);
-		var logMsg = `got assignment doodle from playerId:  ${message.playerId}`;
+		var logMsg = `got assignment doodle from playerId:  ${message.recipientConnectionId}`;
 		console.log(logMsg);
 		logMsg =
 			"the assignment drawing url has a value: " +
-			(playersRef.current[message.playerId].assignment.drawingURL !== "");
+			(playersRef.current[message.recipientConnectionId].assignment.drawingURL !== "");
 		console.log(logMsg);
 	}
 
 	function submitFirstGuess(message : Message) {
 		var players = new Array<Player>();
 		playersRef.current.forEach((player) => {
-			if (player.id === message.playerId) player.firstGuess = message.value;
+			if (player.connectionId === message.recipientConnectionId) player.firstGuess = message.value;
 
 			players.push(player);
 		});
 
 		setPlayers(players);
-		var logMsg = "got first guess from playerId:" + message.playerId;
+		var logMsg = "got first guess from playerId:" + message.recipientConnectionId;
 		console.log(logMsg);
 	}
 	
 	function submitSecondGuess(message : Message) {
 		var players = new Array<Player>();
 		playersRef.current.forEach((player) => {
-			if (player.id === message.playerId) player.secondGuess = message.value;
+			if (player.connectionId === message.recipientConnectionId) player.secondGuess = message.value;
 
 			players.push(player);
 		});
 
 		setPlayers(players);
-		var logMsg = "got second guess from playerId:" + message.playerId;
+		var logMsg = "got second guess from playerId:" + message.recipientConnectionId;
 		console.log(logMsg);
 	}
 
@@ -131,7 +134,7 @@ export default function Doodler() {
 				if (chatGptResponse.success) {
 					var updatedPlayers = new Array<Player>();
 					playersRef.current.forEach(async (player) => {
-						var newPlayer = askPlayerToCreateDoodle(player, chatGptResponse.contentList[player.id]);
+						var newPlayer = askPlayerToCreateDoodle(player, chatGptResponse.contentList[player.connectionId]);
 						updatedPlayers.push(newPlayer);
 					});
 		
@@ -152,19 +155,13 @@ export default function Doodler() {
 			drawingURL: ''
 		};
 		var newPlayer = {
-			id: player.id,
+			connectionId: player.connectionId,
 			name: player.name,
 			pictureURL: player.pictureURL,
 			assignment: doodleAssignment,
 			score: player.score,
 		} as Player;
-		var msg = {
-			type: MessageType.CreateDoodle,
-			gameIndex: gameIndex,
-			playerId: newPlayer.id,
-			value: doodleAssignment.assignment,
-		} as Message;
-		sendMessage(msg);
+		sendMessage(MessageType.CreateDoodle, newPlayer.connectionId, doodleAssignment.assignment);
 
 		return newPlayer;
 	}
@@ -173,7 +170,8 @@ export default function Doodler() {
 		setComponent(PresenterComponent.FirstGuess);
 		console.log("in GoToNextPlayerAssignment");
 		var index = playerAssignmentIndex + 1;
-		var assignmentIndexMsg = "player assignment index: " + index;
+		var playerAssignmentConnectionId = playersRef.current[index].connectionId;
+		var assignmentIndexMsg = "player assignment connectionId: " + playerAssignmentConnectionId;
 		console.log(assignmentIndexMsg);
 		setPlayerAssignmentIndex(index);
 		var updatedPlayers = playersRef.current;
@@ -184,26 +182,16 @@ export default function Doodler() {
 		setPlayers(updatedPlayers);
 
 		playersRef.current.forEach((player) => {
-			if (player.id === index) {
+			if (player.connectionId === playerAssignmentConnectionId) {
 				var logMsg =
-					"playerId: " + player.id + " is waiting for others to guess";
+					"player connectionId: " + player.connectionId + " is waiting for others to guess";
 				console.log(logMsg);
-				var msg = {
-					type: MessageType.WaitingForOtherPlayers,
-					gameIndex: gameIndex,
-					playerId: player.id,
-				} as Message;
-				sendMessage(msg);
+				sendMessage(MessageType.WaitingForOtherPlayers, player.connectionId, '');
 			} else {
 				var logMsg =
-					"playerId: " + player.id + " is about to make their first guess";
+					"player connectionId: " + player.connectionId + " is about to make their first guess";
 				console.log(logMsg);
-				var msg = {
-					type: MessageType.MakeAGuess,
-					gameIndex: gameIndex,
-					playerId: player.id,
-				} as Message;
-				sendMessage(msg);
+				sendMessage(MessageType.MakeAGuess, player.connectionId, '');
 			}
 		});
 	}
@@ -211,6 +199,7 @@ export default function Doodler() {
 	function finishFirstGuess() {
 		setComponent(PresenterComponent.SecondGuess)
 		console.log("in FinishFirstGuess");
+		var playerAssignmentConnectionId = playersRef.current[playerAssignmentIndex].connectionId;
 		var updatedOptions = new Array<string>();
 		playersRef.current.forEach((player) => {
 			if (player.firstGuess) updatedOptions.push(player.firstGuess);
@@ -221,17 +210,11 @@ export default function Doodler() {
 		setOptions(updatedOptions);
 		var updatedOptionsString = JSON.stringify(updatedOptions);
 		playersRef.current.forEach((player) => {
-			if (player.id !== playerAssignmentIndex) {
+			if (player.connectionId !== playerAssignmentConnectionId) {
 				var logMsg =
-					"playerId: " + player.id + " is about to make their second guess";
+					"player connectionId: " + player.connectionId + " is about to make their second guess";
 				console.log(logMsg);
-				var msg = {
-					type: MessageType.ChooseYourAnswer,
-					gameIndex: gameIndex,
-					playerId: player.id,
-					value: updatedOptionsString,
-				} as Message;
-				sendMessage(msg);
+				sendMessage(MessageType.ChooseYourAnswer, player.connectionId, updatedOptionsString);
 			}
 		});
 	}
@@ -279,7 +262,28 @@ export default function Doodler() {
 		return set;
 	}
 
-	function sendMessage(msg: Message) {
+	function sendMessage(type: MessageType, recipientConnectionId: string, value: string) {
+		var msg = {
+			action: sendMessageAction,
+			type: type,
+			recipientConnectionId: recipientConnectionId,
+			senderConnectionId: '',
+			value: value,
+		} as Message;
+		var jsonRequest = JSON.stringify(msg);
+		if (ws.current !== undefined) {
+			ws.current.send(jsonRequest);
+		}
+	}
+
+	function sendMessageToGetGameIdResponse() {
+		var msg = {
+			action: sendMessageAction,
+			type: MessageType.GameId,
+			recipientConnectionId: '',
+			senderConnectionId: '',
+			value: '',
+		} as Message;
 		var jsonRequest = JSON.stringify(msg);
 		if (ws.current !== undefined) {
 			ws.current.send(jsonRequest);
@@ -293,7 +297,7 @@ export default function Doodler() {
 			{loading && <Spinner message="loading..." />}
 			{component === PresenterComponent.StartGame && (
 				<StartGame
-					gameIndex={gameIndex}
+					gameId={gameId}
 					action={createDoodles}
 					players={playersRef.current}
 					newPlayerLink={newPlayerLink}

@@ -4,11 +4,11 @@ import Btn from "@/components/doodler/Btn";
 
 export default function AddPlayer() {
 	const router = useRouter();
-	const [gameIndex, setGameIndex] = useState("");
+	const [gameId, setGameId] = useState("");
 
     function join() {
-        if (gameIndex) {
-            router.push(`/doodler/${gameIndex}/player`);//add handling for invalid game index
+        if (gameId) {
+            router.push(`/doodler/${gameId}/player`);
         }
     }
 
@@ -23,7 +23,7 @@ export default function AddPlayer() {
 						<input
 							className="appearance-none block w-full text-gray-700 border border-green-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
 							type="text"
-							onChange={(e) => setGameIndex(e.target.value)}
+							onChange={(e) => setGameId(e.target.value)}
 						/>
 						<div className="flex self-stretch justify-center">
 							<Btn action={() => join()} text="Join" />

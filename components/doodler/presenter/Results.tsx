@@ -10,7 +10,7 @@ type Props = {
 export default function Results({ players, message }: Props) {
 	const playerDisplays = players.map((player) => {
 		return (
-			<div key={player.id} className="flex-col m-3">
+			<div key={player.connectionId} className="flex-col m-3">
 				<div className="flex self-stretch justify-center">
 					<img
 						className="border-2 rounded-md border-teal-500"

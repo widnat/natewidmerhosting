@@ -23,7 +23,7 @@ export default function FirstGuess({
 			if (player.firstGuess) ++numFinishedPlayers;
 
 			return (
-				<div key={player.id}>
+				<div key={player.connectionId}>
 					{player.firstGuess && (
 						<div className="m-3">
 							<img

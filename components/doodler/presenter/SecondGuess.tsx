@@ -27,7 +27,7 @@ export default function SecondGuess({
 			if (player.secondGuess) ++numFinishedPlayers;
 
 			return (
-				<div key={player.id}>
+				<div key={player.connectionId}>
 					{player.secondGuess && (
 						<div className="flex-col m-3">
 							<div className="flex self-stretch justify-center">

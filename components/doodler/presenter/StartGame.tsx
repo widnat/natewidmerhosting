@@ -4,14 +4,14 @@ import { Player } from "@/types/doodler";
 import QRCode from "react-qr-code";
 
 type Props = {
-  gameIndex: number;
+  gameId: string;
   action: any;
   players: Player[];
   newPlayerLink: string;
 };
 
 export default function StartGame({
-  gameIndex,
+  gameId,
   action,
   players,
   newPlayerLink,
@@ -23,7 +23,7 @@ export default function StartGame({
   useEffect(() => {
     var updatedPlayers = players.map((player) => {
       return (
-        <div key={player.id} className="flex-col m-3">
+        <div key={player.connectionId} className="flex-col m-3">
           <div className="flex self-stretch justify-center">
             <img
               className="border-2 rounded-md border-teal-500"
@@ -44,11 +44,11 @@ export default function StartGame({
 
   return (
     <div>
-      {gameIndex != -1 && (
+      {gameId != '-1' && (
         <div className="flex self-stretch w-screen justify-center">
           <div className="flex-col space-y-3">
             <div className="flex self-stretch justify-center">
-              <div className="font-bold text-center text-3xl text-cyan-500">GAME ID:  {gameIndex}</div>
+              <div className="font-bold text-center text-3xl text-cyan-500">GAME ID:  {gameId}</div>
             </div>
             <div className="flex self-stretch justify-center">
               Add player by using the QRCode

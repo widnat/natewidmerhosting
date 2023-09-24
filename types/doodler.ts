@@ -3,9 +3,10 @@ export type Game = {
 }
 
 export type Message = {
+    action: string;
     type: number;
-    gameIndex: number;
-    playerId: number;
+    recipientConnectionId: string;
+    senderConnectionId: string;
     value: string;
 }
 
@@ -26,7 +27,7 @@ export type Point = {
 }
 
 export type Player = {
-    id: number;
+    connectionId: string;
 	name: string;
     pictureURL: string;
     assignment: DoodleAssignment;

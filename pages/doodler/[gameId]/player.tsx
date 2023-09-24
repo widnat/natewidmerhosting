@@ -9,11 +9,11 @@ import PlayersSecondGuess from "@/components/doodler/player/PlayersSecondGuess";
 import { MessageType, PlayerComponent } from "@/enums/doodler";
 
 export default function Doodler() {
+	const sendMessageAction = 'sendmessage';
 	const router = useRouter();
-	const gameIndex = Number(router.query.gameIndex);
+	const gameId = String(router.query.gameId);
 	const [connected, setConnected] = useState(false);
 	var hasConstructed = false;
-	const playerId = useRef<number>(-1);
 	const [doodleAssignment, setDoodleAssignment] = useState("");
 	const [component, setComponent] = useState(PlayerComponent.JoinGame);
 	const [options, setOptions] = useState(new Array<string>());
@@ -22,21 +22,21 @@ export default function Doodler() {
 	useEffect(() => {
 		if (!hasConstructed && router.isReady) {
 			hasConstructed = true;
-			ws.current = new WebSocket("wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/", String(gameIndex));
+			ws.current = new WebSocket("wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/", String(gameId));
 			ws.current.onerror = (err) => {
 				console.error(err);
 				alert("Error: unable to connect to server");
 			}
-			ws.current.onopen = (event) => setConnected(true);
+			ws.current.onopen = (event) => {
+				setConnected(true);
+			}
 			ws.current.onmessage = (msg: any) => handleServerMessage(msg.data);
 		}
 	}, [router.isReady]);
 
 	function handleServerMessage(msg: string) {
 		const message = JSON.parse(msg) as Message;
-		if (message.type === MessageType.PlayerId) {
-			playerId.current = Number(message.value);
-		} else if (message.type === MessageType.CreateDoodle) {
+		if (message.type === MessageType.CreateDoodle) {
 			setDoodleAssignment(message.value);
 			setComponent(PlayerComponent.CreateAssignmentDoodle)
 		} else if (message.type === MessageType.WaitingForOtherPlayers) {
@@ -59,45 +59,29 @@ export default function Doodler() {
 			imageUrl: doodleURL,
 		} as AddPlayerMessage;
 		var jsonAddPlayer = JSON.stringify(addPlayer);
-		var msg = {
-			type: MessageType.AddPlayer,
-			gameIndex: gameIndex,
-			value: jsonAddPlayer,
-		} as Message;
-		SendMessage(msg);
+		SendMessage(MessageType.AddPlayer, jsonAddPlayer);
 	}
 
 	function submitAssignmentDoodle(doodleURL: string) {
-		var msg = {
-			type: MessageType.SubmitAssignmentDoodle,
-			gameIndex: gameIndex,
-			playerId: playerId.current,
-			value: doodleURL,
-		} as Message;
-		SendMessage(msg);
+		SendMessage(MessageType.SubmitAssignmentDoodle, doodleURL);
 	}
 
 	function submitFirstGuess(guess: string) {
-		var msg = {
-			type: MessageType.SubmitFirstGuess,
-			gameIndex: gameIndex,
-			playerId: playerId.current,
-			value: guess,
-		} as Message;
-		SendMessage(msg);
+		SendMessage(MessageType.SubmitFirstGuess, guess);
 	}
 
 	function submitSecondGuess(guess: string) {
-		var msg = {
-			type: MessageType.SubmitSecondGuess,
-			gameIndex: gameIndex,
-			playerId: playerId.current,
-			value: guess,
-		} as Message;
-		SendMessage(msg);
+		SendMessage(MessageType.SubmitSecondGuess, guess);
 	}
 
-	function SendMessage(msg: Message) {
+	function SendMessage(type: MessageType, value: string) {
+		var msg = {
+			action: sendMessageAction,
+			type: type,
+			recipientConnectionId: gameId,
+			senderConnectionId: '',
+			value: value,
+		} as Message;
 		var jsonRequest = JSON.stringify(msg);
 		if (ws.current !== undefined) {
 			ws.current.send(jsonRequest);
