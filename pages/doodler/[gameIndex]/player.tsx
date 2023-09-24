@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { AddPlayerMessage, Message } from "@/types/doodler";
 import JoinGame from "@/components/doodler/player/JoinGame";
 import CreateAssignmentDoodle from "@/components/doodler/player/CreateAssignmentDoodle";
-import NavBar from "@/components/NavBar/NavBar";
 import Title from "@/components/Title";
 import PlayersFirstGuess from "@/components/doodler/player/PlayersFirstGuess";
 import PlayersSecondGuess from "@/components/doodler/player/PlayersSecondGuess";
@@ -23,8 +22,11 @@ export default function Doodler() {
 	useEffect(() => {
 		if (!hasConstructed && router.isReady) {
 			hasConstructed = true;
-			ws.current = new WebSocket("ws://localhost:8080", String(gameIndex));
-			ws.current.onerror = (err) => console.error(err);
+			ws.current = new WebSocket("wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/", String(gameIndex));
+			ws.current.onerror = (err) => {
+				console.error(err);
+				alert("Error: unable to connect to server");
+			}
 			ws.current.onopen = (event) => setConnected(true);
 			ws.current.onmessage = (msg: any) => handleServerMessage(msg.data);
 		}
@@ -104,7 +106,6 @@ export default function Doodler() {
 
 	return (
 		<>
-			<NavBar />
 			<Title title="Doodler" page="" />
 			{connected && component === PlayerComponent.JoinGame && (
 				<JoinGame action={joinGame} />

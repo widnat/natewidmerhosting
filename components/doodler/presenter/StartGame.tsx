@@ -48,10 +48,13 @@ export default function StartGame({
         <div className="flex self-stretch w-screen justify-center">
           <div className="flex-col space-y-3">
             <div className="flex self-stretch justify-center">
-              Add player by entering this url in a browser or use the QRCode
+              <div className="font-bold text-center text-3xl text-cyan-500">GAME ID:  {gameIndex}</div>
             </div>
             <div className="flex self-stretch justify-center">
-              {newPlayerLink}
+              Add player by using the QRCode
+            </div>
+            <div className="flex self-stretch justify-center">
+              Or enter <div className="text-cyan-500 ml-2 mb-5 underline">{newPlayerLink}</div>
             </div>
             <div
               style={{
