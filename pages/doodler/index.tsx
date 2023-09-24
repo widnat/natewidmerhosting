@@ -24,7 +24,6 @@ export default function Doodler() {
 		playersRef.current = updatedPlayers;
 		_setPlayers(updatedPlayers);
 	};
-	const serverAddress = WS_ADDRESS
 	const [options, setOptions] = useState(new Array<string>());
 	var hasConstructed = false;
 	const [gameId, setGameId] = useState('-1');
@@ -41,7 +40,7 @@ export default function Doodler() {
 	useEffect(() => {
 		if (!hasConstructed) {
 			hasConstructed = true;
-			ws.current = new WebSocket(serverAddress, "presenter"); 
+			ws.current = new WebSocket(WS_ADDRESS); 
 			ws.current.onerror = (err) => console.error(err);
 			ws.current.onopen = (event) => setLoading(false);
 			ws.current.onmessage = (msg: any) => handleServerMessage(msg.data);
