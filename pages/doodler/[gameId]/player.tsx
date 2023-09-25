@@ -22,7 +22,7 @@ export default function Doodler() {
 	useEffect(() => {
 		if (!hasConstructed && router.isReady) {
 			hasConstructed = true;
-			ws.current = new WebSocket("wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/", String(gameId));
+			ws.current = new WebSocket("wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/");
 			ws.current.onerror = (err) => {
 				console.error(err);
 				alert("Error: unable to connect to server");

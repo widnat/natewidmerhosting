@@ -13,8 +13,6 @@ import { PresenterComponent, MessageType } from "@/enums/doodler";
 
 export default function Doodler() {
 	const sendMessageAction = 'sendmessage';
-	const IS_WEB_PRODUCTION = true;
-	const IS_APP_PRODUCTION = true;
 	const WEB_ADDRESS = 'https://natewidmer.com';
 	const WS_ADDRESS = 'wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/';
 
@@ -29,7 +27,7 @@ export default function Doodler() {
 	const [gameId, setGameId] = useState('-1');
 	const newPlayerLink = `${WEB_ADDRESS}/doodler/addPlayer`
 	const [playerAssignmentIndex, setPlayerAssignmentIndex] = useState(-1);
-	const [component, setComponent] = useState(PresenterComponent.StartGame);
+	const [component, setComponent] = useState(PresenterComponent.LoadingGame);
 	const [loading, setLoading] = useState(true);
 	const [resultsMessage, setResultsMessage] = useState(
 		"That was a great round!"
@@ -42,26 +40,33 @@ export default function Doodler() {
 			hasConstructed = true;
 			ws.current = new WebSocket(WS_ADDRESS); 
 			ws.current.onerror = (err) => console.error(err);
-			ws.current.onopen = (event) => setLoading(false);
+			ws.current.onopen = (event) => {
+				sendMessageToGetGameIdResponse();
+			}
 			ws.current.onmessage = (msg: any) => handleServerMessage(msg.data);
 		}
 	}, []);
 
 	function handleServerMessage(msg: string) {
-		const message = JSON.parse(msg) as Message;
-		if (message.type == MessageType.GameId || gameId !== message.recipientConnectionId) {
-			setGameId(message.recipientConnectionId);
-		}
-
-		if (message.type === MessageType.AddPlayer) {
-			const addPlayerMessage = JSON.parse(message.value) as AddPlayerMessage;
-			addPlayer(addPlayerMessage, message.recipientConnectionId);
-		} else if (message.type === MessageType.SubmitAssignmentDoodle) {
-			submitAssignmentDoodle(message);
-		} else if (message.type === MessageType.SubmitFirstGuess) {
-			submitFirstGuess(message);
-		} else if (message.type === MessageType.SubmitSecondGuess) {
-			submitSecondGuess(message);
+		if (msg) {
+			const msgAsJson = JSON.parse(msg);
+			const message = msgAsJson as Message;
+			if (message.type == MessageType.GameId || gameId !== message.recipientConnectionId) {
+				setGameId(message.recipientConnectionId);
+				setComponent(PresenterComponent.StartGame);
+				setLoading(false);
+			}
+	
+			if (message.type === MessageType.AddPlayer) {
+				const addPlayerMessage = JSON.parse(message.value) as AddPlayerMessage;
+				addPlayer(addPlayerMessage, message.recipientConnectionId);
+			} else if (message.type === MessageType.SubmitAssignmentDoodle) {
+				submitAssignmentDoodle(message);
+			} else if (message.type === MessageType.SubmitFirstGuess) {
+				submitFirstGuess(message);
+			} else if (message.type === MessageType.SubmitSecondGuess) {
+				submitSecondGuess(message);
+			}
 		}
 	}
 

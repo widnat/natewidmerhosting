@@ -1,4 +1,5 @@
 export enum PresenterComponent {
+    LoadingGame,
     StartGame,
     CreateAssignment,
     FirstGuess,
