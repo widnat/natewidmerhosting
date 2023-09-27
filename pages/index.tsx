@@ -11,32 +11,38 @@ export default function Home(hex: number) {
 				<link href="/styles/tailwind.css" rel="stylesheet"></link>
 			</Head>
 			<NavBar />
-			<div>
-				<div className="flex-row m-3">
-					<div className="flex self-stretch justify-center text-gray-700 text-3xl">
-						Welcome to my projects website of 2023!
-					</div>
-					<div className="flex self-stretch justify-center mt-3">
-						Go ahead and check out some of my current projects in the links
-						above <span className="text-lg ml-1">&#8593;</span>
-					</div>
+			<div className="min-h-screen flex justify-center items-center bg-cover" style={{ backgroundImage: "url(/images/river.jpeg)" }}>
+  <div className="bg-white bg-opacity-80 p-8 rounded-lg shadow-md">
+    <div className="text-center text-3xl font-bold text-gray-700 mb-4">
+      Welcome to my projects website!
+    </div>
+    <div className="text-center text-gray-700 text-lg mb-6">
+      Here is a description of the projects you can check out:
+    </div>
+    <ul className="list-disc ml-6">
+      <li className="mb-2">
+        <span className="font-semibold">Skull Keeper</span>
+        <p className="text-gray-600 ml-3">
+          This is a score keeper for the card game Skull king
+        </p>
+      </li>
+      <li className="mb-2">
+        <span className="font-semibold">Calculator</span>
+        <p className="text-gray-600 ml-3">
+          I thought it would be fun to recreate the calculator on my iPhone
+        </p>
+      </li>
+      <li className="mb-2">
+        <span className="font-semibold">Doodler</span>
+        <p className="text-gray-600 ml-3 max-w-md">
+          Websockets sounded interesting, so I made a clone of Drawful by Jackbox Games
+        </p>
+      </li>
+    </ul>
+  </div>
+</div>
 
-					<div className="flex self-stretch justify-center">
-						This is a recording of Doodler, a Drawful clone. I wrote this using
-						WebSockets to communicate between my Next.js front end and my Node
-						Express backend.
-					</div>
-					<div className="flex self-stretch justify-center">
-						<iframe
-							width="1280"
-							height="720"
-							src="https://www.youtube.com/embed/QecI_FTcPOw"
-							title="Doodler(a Drawful clone)"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-						></iframe>
-					</div>
-				</div>
-			</div>
+
 		</>
 	);
 }

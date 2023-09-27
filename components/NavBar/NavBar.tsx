@@ -20,7 +20,7 @@ export default function NavBar() {
 						<div className="hidden sm:ml-6 sm:block">
 							<div className="flex space-x-4">
 								<HrefBtn route="/" text="Home" />
-								<HrefBtn route="/skullKeeper/players" text="skull Keeper" />
+								<HrefBtn route="/skullKeeper/players" text="Skull Keeper" />
 								<HrefBtn route="/calculator/calculator" text="Calculator" />
 								<HrefBtn route="/doodler" text="Doodler" />
 							</div>

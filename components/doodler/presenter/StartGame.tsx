@@ -60,7 +60,7 @@ export default function StartGame({
               style={{
                 height: "auto",
                 margin: "0 auto",
-                maxWidth: 256,
+                maxWidth: 150,
                 width: "100%",
               }}
             >
