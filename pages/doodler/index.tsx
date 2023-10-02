@@ -15,6 +15,7 @@ export default function Doodler() {
 	const sendMessageAction = 'sendmessage';
 	const WEB_ADDRESS = 'https://natewidmer.com';
 	const WS_ADDRESS = 'wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/';
+	const GET_ASSIGNMENTS_LAMBDA = 'https://v8938chp5f.execute-api.us-east-2.amazonaws.com/production/getChatGptAssignments/';
 
 	const [_players, _setPlayers] = useState<Player[]>([]);
 	const playersRef = useRef(_players);
@@ -130,10 +131,10 @@ export default function Doodler() {
 	async function createDoodles() {
 		if (playersRef.current.length > 1) {
 			axios.get(
-				`${WS_ADDRESS}/getChatGptDrawingAssignment/?numberOfContentsRequested=${playersRef.current.length}`
+				`${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`
 			)
 			.then(function (response : any) {
-				let chatGptResponse = response.data as ChatGptResponse
+				let chatGptResponse = response.body as ChatGptResponse
 				console.log(chatGptResponse);
 				if (chatGptResponse.success) {
 					var updatedPlayers = new Array<Player>();
