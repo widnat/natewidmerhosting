@@ -13,7 +13,7 @@ import { PresenterComponent, MessageType } from "@/enums/doodler";
 
 export default function Doodler() {
 	const sendMessageAction = 'sendmessage';
-	const WEB_ADDRESS = 'https://natewidmer.com';
+	const PLAYER_ADDRESS = 'https://doodler.player.natewidmer.com';
 	const WS_ADDRESS = 'wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/';
 	const GET_ASSIGNMENTS_LAMBDA = 'https://v8938chp5f.execute-api.us-east-2.amazonaws.com/production/getChatGptAssignments/';
 
@@ -26,7 +26,7 @@ export default function Doodler() {
 	const [options, setOptions] = useState(new Array<string>());
 	var hasConstructed = false;
 	const [gameId, setGameId] = useState('-1');
-	const newPlayerLink = `${WEB_ADDRESS}/doodler/addPlayer`
+	const newPlayerLink = `${PLAYER_ADDRESS}/${gameId}`
 	const [playerAssignmentIndex, setPlayerAssignmentIndex] = useState(-1);
 	const [component, setComponent] = useState(PresenterComponent.LoadingGame);
 	const [loading, setLoading] = useState(true);
