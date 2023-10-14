@@ -52,6 +52,7 @@ export default function Doodler() {
 	}, []);
 
 	function handleServerMessage(msg: string) {
+		console.log(`recieved websocket message ${JSON.stringify(msg)}`)
 		if (msg) {
 			const msgAsJson = JSON.parse(msg);
 			const message = msgAsJson as Message;
@@ -162,6 +163,7 @@ export default function Doodler() {
 	}
 
 	function askPlayerToCreateDoodle(player: Player, drawingDescription: string) {
+		console.log(`asing player to create doodle assignment:${drawingDescription}`);
 		var doodleAssignment:DoodleAssignment = {
 			assignment: drawingDescription,
 			drawingURL: ''
