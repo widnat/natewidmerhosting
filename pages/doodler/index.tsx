@@ -64,7 +64,7 @@ export default function Doodler() {
 	
 			if (message.type === MessageType.AddPlayer) {
 				const addPlayerMessage = JSON.parse(message.value) as AddPlayerMessage;
-				addPlayer(addPlayerMessage, message.recipientConnectionId);
+				addPlayer(addPlayerMessage, message.senderConnectionId);
 			} else if (message.type === MessageType.SubmitAssignmentDoodle) {
 				submitAssignmentDoodle(message);
 			} else if (message.type === MessageType.SubmitFirstGuess) {
