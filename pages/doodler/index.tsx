@@ -18,7 +18,7 @@ export default function Doodler() {
 	// const PLAYER_ADDRESS = 'https://doodler.player.natewidmer.com'; //angular player app
 	const WS_ADDRESS = 'wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/';
 	const GET_ASSIGNMENTS_LAMBDA = 'https://v8938chp5f.execute-api.us-east-2.amazonaws.com/production/getChatGptAssignments/';
-
+	
 	const [_players, _setPlayers] = useState<Player[]>([]);
 	const playersRef = useRef(_players);
 	const setPlayers = (updatedPlayers: Player[]) => {
@@ -133,6 +133,7 @@ export default function Doodler() {
 
 	async function createDoodles() {
 		if (playersRef.current.length > 1) {
+			console.log(`calling ${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`)
 			axios.get(
 				`${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`
 			)
@@ -148,6 +149,9 @@ export default function Doodler() {
 		
 					setPlayers(updatedPlayers);
 					setComponent(PresenterComponent.CreateAssignment);
+				}
+				else {
+					console.log('gpt response returned not success');
 				}
 			})
 			.catch(function (error : any) {
