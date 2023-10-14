@@ -138,8 +138,9 @@ export default function Doodler() {
 				`${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`
 			)
 			.then(function (response : any) {
+				console.log(`gpt lambda body response: ${response}`)
 				let chatGptResponse = response.body as ChatGptResponse
-				console.log(chatGptResponse);
+				console.log(`gpt response: ${chatGptResponse}`);
 				if (chatGptResponse.success) {
 					var updatedPlayers = new Array<Player>();
 					playersRef.current.forEach(async (player) => {
