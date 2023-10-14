@@ -139,7 +139,7 @@ export default function Doodler() {
 			)
 			.then(function (response : any) {
 				let chatGptResponse = response as ChatGptResponse
-				console.log(`gpt response: ${chatGptResponse}`);
+				console.log(`gpt response: ${JSON.stringify(chatGptResponse)}`);
 				if (chatGptResponse.success) {
 					var updatedPlayers = new Array<Player>();
 					playersRef.current.forEach(async (player) => {
