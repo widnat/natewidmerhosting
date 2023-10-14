@@ -52,10 +52,10 @@ export default function Doodler() {
 	}, []);
 
 	function handleServerMessage(msg: string) {
-		console.log(`recieved websocket message ${JSON.stringify(msg)}`)
 		if (msg) {
 			const msgAsJson = JSON.parse(msg);
 			const message = msgAsJson as Message;
+			console.log(`recieved websocket message ${JSON.stringify(msgAsJson)}`)
 			if (message.type == MessageType.GameId || gameId !== message.recipientConnectionId) {
 				setGameId(message.recipientConnectionId);
 				setComponent(PresenterComponent.StartGame);
