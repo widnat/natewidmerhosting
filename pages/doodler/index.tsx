@@ -138,7 +138,7 @@ export default function Doodler() {
 				`${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`
 			)
 			.then(function (response : any) {
-				let chatGptResponse = response as ChatGptResponse
+				let chatGptResponse = response.data as ChatGptResponse
 				console.log(`gpt response: ${JSON.stringify(chatGptResponse)}`);
 				if (chatGptResponse.success) {
 					var updatedPlayers = new Array<Player>();
