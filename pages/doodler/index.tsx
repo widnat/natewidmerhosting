@@ -67,7 +67,7 @@ export default function Doodler() {
         gameId !== message.recipientConnectionId
       ) {
         console.log(
-          `setting game id. messagetype:${message.type} new gameId:${message.recipientConnectionId}`
+          `setting game id. messagetype:${message.type} old gameId:${gameId} new gameId:${message.recipientConnectionId}`
         );
         setGameId(message.recipientConnectionId);
         setComponent(PresenterComponent.StartGame);
@@ -105,8 +105,6 @@ export default function Doodler() {
     var players = new Array<Player>();
     playersRef.current.forEach((player) => {
       if (player.connectionId === message.senderConnectionId) {
-		console.log(`message value from player:${JSON.stringify(message.value)}`);
-		console.log(`submitAssignmentDoodle for playerConnection: ${player.connectionId}`)
 		player.assignment.drawingURL = message.value;
 	  }
 
