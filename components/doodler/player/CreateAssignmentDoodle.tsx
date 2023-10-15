@@ -22,7 +22,7 @@ export default function CreateDoodle({ action, assignment }: Props) {
 				{!waiting && (
 					<div>
 						<div className="flex items-center justify-center">
-							{assignment}
+							draw {assignment}
 						</div>
 						<DrawingArea action={doneDrawing} actionText="Submit Doodle" />
 					</div>
