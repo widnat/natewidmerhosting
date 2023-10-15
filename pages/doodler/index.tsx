@@ -105,8 +105,9 @@ export default function Doodler() {
     var players = new Array<Player>();
     playersRef.current.forEach((player) => {
       if (player.connectionId === message.senderConnectionId) {
-		console.log(`message from player:${JSON.stringify(message)}`);
+		console.log(`message value from player:${JSON.stringify(message.value)}`);
 		console.log(`submitAssignmentDoodle for playerConnection: ${player.connectionId}`)
+		player.assignment.drawingURL = "";
         // player.assignment.drawingURL = message.value;
 	  }
 
