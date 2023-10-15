@@ -104,19 +104,15 @@ export default function Doodler() {
   function submitAssignmentDoodle(message: Message) {
     var players = new Array<Player>();
     playersRef.current.forEach((player) => {
-      if (player.connectionId === message.senderConnectionId)
+      if (player.connectionId === message.senderConnectionId) {
+		console.log(`submitAssignmentDoodle for playerConnection: ${player.connectionId}`)
         player.assignment.drawingURL = message.value;
+	  }
 
       players.push(player);
     });
 
     setPlayers(players);
-    var logMsg = `got assignment doodle from playerId:  ${message.senderConnectionId}`;
-    logMsg =
-      "the assignment drawing url has a value: " +
-      (playersRef.current[message.senderConnectionId].assignment.drawingURL !==
-        "");
-    console.log(logMsg);
   }
 
   function submitFirstGuess(message: Message) {
