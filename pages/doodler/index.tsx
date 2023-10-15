@@ -55,8 +55,8 @@ export default function Doodler() {
 		if (msg) {
 			const msgAsJson = JSON.parse(msg);
 			const message = msgAsJson as Message;
-			console.log(`recieved websocket message ${JSON.stringify(msgAsJson)}`)
 			if (message.type == MessageType.GameId || gameId !== message.recipientConnectionId) {
+				console.log(`setting game id. messagetype:${message.type} new gameId:${message.recipientConnectionId}`)
 				setGameId(message.recipientConnectionId);
 				setComponent(PresenterComponent.StartGame);
 				setLoading(false);
@@ -83,7 +83,6 @@ export default function Doodler() {
 			score: 0,
 		} as Player;
 		var logMsg = `added ${message.name} with playerid: ${nextNewPlayerIndex.current}`;
-		console.log(logMsg);
 		nextNewPlayerIndex.current++;
 		setPlayers([...playersRef.current, newPlayer]);
 	}
@@ -99,11 +98,9 @@ export default function Doodler() {
 
 		setPlayers(players);
 		var logMsg = `got assignment doodle from playerId:  ${message.recipientConnectionId}`;
-		console.log(logMsg);
 		logMsg =
 			"the assignment drawing url has a value: " +
 			(playersRef.current[message.recipientConnectionId].assignment.drawingURL !== "");
-		console.log(logMsg);
 	}
 
 	function submitFirstGuess(message : Message) {
@@ -116,7 +113,6 @@ export default function Doodler() {
 
 		setPlayers(players);
 		var logMsg = "got first guess from playerId:" + message.recipientConnectionId;
-		console.log(logMsg);
 	}
 	
 	function submitSecondGuess(message : Message) {
@@ -129,19 +125,16 @@ export default function Doodler() {
 
 		setPlayers(players);
 		var logMsg = "got second guess from playerId:" + message.recipientConnectionId;
-		console.log(logMsg);
 	}
 
 	async function createDoodles() {
 		if (playersRef.current.length > 1) {
 			setLoading(true);
-			console.log(`calling ${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`)
 			axios.get(
 				`${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`
 			)
 			.then(function (response : any) {
 				let chatGptResponse = response.data as ChatGptResponse
-				console.log(`gpt response: ${JSON.stringify(chatGptResponse)}`);
 				if (chatGptResponse.success) {
 					var updatedPlayers = new Array<Player>();
 					var assignmentIndex = 0;
@@ -167,7 +160,6 @@ export default function Doodler() {
 	}
 
 	function askPlayerToCreateDoodle(player: Player, drawingDescription: string) {
-		console.log(`asing player to create doodle assignment:${drawingDescription}`);
 		var doodleAssignment:DoodleAssignment = {
 			assignment: drawingDescription,
 			drawingURL: ''
