@@ -35,8 +35,13 @@ export default function Doodler() {
   };
   const [options, setOptions] = useState(new Array<string>());
   var hasConstructed = false;
-  const [gameId, setGameId] = useState("-1");
-  const newPlayerLink = `${PLAYER_ADDRESS}/${gameId}/player`;
+  const [_gameId, _setGameId] = useState("-1");
+  const gameIdRef = useRef(_gameId);
+  const setGameId = (newGameId: string) => {
+	gameIdRef.current = newGameId;
+	_setGameId(newGameId);
+  }
+  const newPlayerLink = `${PLAYER_ADDRESS}/${gameIdRef.current}/player`;
   //const newPlayerLink = `${PLAYER_ADDRESS}/${gameId}` for angular
   const [playerAssignmentIndex, setPlayerAssignmentIndex] = useState(-1);
   const [component, setComponent] = useState(PresenterComponent.LoadingGame);
@@ -64,10 +69,10 @@ export default function Doodler() {
       const msgAsJson = JSON.parse(msg);
       const message = msgAsJson as Message;
       if (
-        gameId !== message.recipientConnectionId
+        gameIdRef.current !== message.recipientConnectionId
       ) {
         console.log(
-          `setting game id. messagetype:${message.type} old gameId:${gameId} new gameId:${message.recipientConnectionId}`
+          `setting game id. messagetype:${message.type} old gameId:${gameIdRef.current} new gameId:${message.recipientConnectionId}`
         );
         setGameId(message.recipientConnectionId);
         setComponent(PresenterComponent.StartGame);
@@ -352,7 +357,7 @@ export default function Doodler() {
       {loading && <Spinner message="loading..." />}
       {component === PresenterComponent.StartGame && (
         <StartGame
-          gameId={gameId}
+          gameId={gameIdRef.current}
           action={createDoodles}
           players={playersRef.current}
           newPlayerLink={newPlayerLink}
