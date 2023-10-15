@@ -134,6 +134,7 @@ export default function Doodler() {
 
 	async function createDoodles() {
 		if (playersRef.current.length > 1) {
+			setLoading(true);
 			console.log(`calling ${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`)
 			axios.get(
 				`${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`
@@ -152,6 +153,7 @@ export default function Doodler() {
 		
 					setPlayers(updatedPlayers);
 					setComponent(PresenterComponent.CreateAssignment);
+					setLoading(false);
 				}
 				else {
 					console.log('gpt response returned not success');
