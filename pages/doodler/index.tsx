@@ -144,6 +144,7 @@ export default function Doodler() {
 				if (chatGptResponse.success) {
 					var updatedPlayers = new Array<Player>();
 					playersRef.current.forEach(async (player) => {
+						console.log(`askPlayerToCreateDoodle player:${JSON.stringify(player)} contentList: ${JSON.stringify(chatGptResponse.contentList)}`)
 						var newPlayer = askPlayerToCreateDoodle(player, chatGptResponse.contentList[player.connectionId]);
 						updatedPlayers.push(newPlayer);
 					});
