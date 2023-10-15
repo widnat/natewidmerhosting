@@ -69,6 +69,9 @@ export default function StartGame({
               />
             </div>
             <div className="flex self-stretch justify-center">
+              There must be at least two players to start a game
+            </div>
+            <div className="flex self-stretch justify-center">
               <Btn action={() => action()} text="Start Game" />
             </div>
 
