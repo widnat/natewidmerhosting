@@ -29,8 +29,8 @@ export default function StartGame({
               className="border-2 rounded-md border-teal-500"
               key={player.name}
               src={player.pictureURL}
-              width={100}
-              height={100}
+              width={window.innerWidth * .15}
+              height={window.innerWidth * .15}
             />
           </div>
           <div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
@@ -57,7 +57,7 @@ export default function StartGame({
               style={{
                 height: "auto",
                 margin: "0 auto",
-                maxWidth: 150,
+                maxWidth: window.innerWidth * .25,
                 width: "100%",
               }}
             >
