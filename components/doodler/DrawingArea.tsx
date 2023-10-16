@@ -23,8 +23,8 @@ export default function DrawingArea({ action, actionText }: Props) {
 		lineWidthRef.current = newLineWidth;
 		_setLineWidth(newLineWidth);
 	};
-	const [canvasWidth, setCanvasWidth] = useState(50);
-	const [canvasHeight, setCanvasHeight] = useState(50);
+	const [canvasWidth, setCanvasWidth] = useState(400);
+	const [canvasHeight, setCanvasHeight] = useState(400);
 	var canvasTop = 0;
 	var lastx = 0;
 	var lasty = 0;
@@ -48,8 +48,8 @@ export default function DrawingArea({ action, actionText }: Props) {
 	}
 
 	function handleResize() {
-		setCanvasWidth(window.innerWidth * 0.7);
-		setCanvasHeight(window.innerWidth * 0.7);
+		// setCanvasWidth(window.innerWidth * 0.7);
+		// setCanvasHeight(window.innerWidth * 0.7);
 	}
 
 	useEffect(() => {
