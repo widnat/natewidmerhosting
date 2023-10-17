@@ -23,21 +23,21 @@ export default function Results({
             className="border-2 rounded-md border-teal-500"
             key={player.name}
             src={player.pictureURL}
-            width={window.innerWidth * .25}
-            height={window.innerWidth * .25}
+            width={window.innerWidth * .15}
+            height={window.innerWidth * .15}
           />
         </div>
-        <div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
+        <div className="flex mt-3 self-stretch justify-center text-lg text-black font-bold">
           {player.name}
           {"s written guess: "}
           {player.firstGuess}
         </div>
-        <div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
+        <div className="flex mt-3 self-stretch justify-center text-lg text-black font-bold">
           {player.name}
           {"s final guess: "}
           {player.secondGuess}
         </div>
-        <div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
+        <div className="flex mt-3 self-stretch justify-center text-lg text-black font-bold">
           {player.name}
           {"s score: "}
           {player.score}
@@ -48,21 +48,22 @@ export default function Results({
 
   return (
     <div className="flex-row self-stretch w-screen justify-center">
-      <div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
+      <div className="flex mt-3 self-stretch justify-center text-2xl text-black uppercase font-extrabold">
         {players[playerAssignmentIndex].name}
-        {" drew this AWESOME doodle!!!"}
+		<div className="text-lg lowercase font-bold">{" drew this AWESOME doodle!!!"}</div>
+        
       </div>
-      <div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
-        {"The correct answer was: "}
-        {players[playerAssignmentIndex].assignment.assignment}
+      <div className="flex mt-3 self-stretch justify-center text-2xl text-black uppercase font-extrabold">
+		<div className="text-lg lowercase font-bold">"The correct answer was: "</div>
+		{players[playerAssignmentIndex].assignment.assignment}
       </div>
       <div className="flex self-stretch justify-center">
         <img
           className="border-2 rounded-md border-teal-500"
           key={players[playerAssignmentIndex].name}
           src={players[playerAssignmentIndex].pictureURL}
-          width={100}
-          height={100}
+          width={window.innerWidth * .25}
+          height={window.innerWidth * .25}
         />
       </div>
       <div className="flex self-stretch justify-center text-4xl font-bold pt-16">

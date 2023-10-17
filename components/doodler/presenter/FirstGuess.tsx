@@ -30,8 +30,8 @@ export default function FirstGuess({
 								className="border-2 rounded-md border-teal-500"
 								key={player.name}
 								src={player.pictureURL}
-								width={window.innerWidth * .25}
-								height={window.innerWidth * .25}
+								width={window.innerWidth * .15}
+								height={window.innerWidth * .15}
 							/>
 							<div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
 								{player.name} Finished!
@@ -63,8 +63,8 @@ export default function FirstGuess({
 					<img
 						className="border-2 rounded-md border-teal-500"
 						src={players[playerAssignmentIndex].assignment.drawingURL}
-						width={200}
-						height={200}
+						width={window.innerWidth * .25}
+						height={window.innerWidth * .25}
 					/>
 				</div>
 
