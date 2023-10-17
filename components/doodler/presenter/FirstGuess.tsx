@@ -58,7 +58,7 @@ export default function FirstGuess({
 	return (
 		<div className="flex self-stretch w-screen justify-center">
 			<div className="flex-col space-y-3">
-				<div className="flex self-stretch justify-center">{message}</div>
+				<div className="flex self-stretch  justify-center text-3xl font-bold pt-16">{message}</div>
 				<div className="flex self-stretch justify-center">
 					<img
 						className="border-2 rounded-md border-teal-500"
@@ -68,7 +68,7 @@ export default function FirstGuess({
 					/>
 				</div>
 
-				<div className="flex self-stretch justify-center text-4xl font-bold pt-16">
+				<div className="flex self-stretch justify-center text-3xl font-bold pt-16">
 					Players finished with first guess
 				</div>
 				<div className="flex self-stretch justify-center max-w-7xl">
