@@ -351,7 +351,7 @@ export default function Doodler() {
     <div>
       <NavBar />
       {loading && <Spinner message="loading..." />}
-      {component === PresenterComponent.StartGame && (
+      {!loading && component === PresenterComponent.StartGame && (
         <StartGame
           gameId={gameIdRef.current}
           action={createDoodles}
@@ -359,20 +359,20 @@ export default function Doodler() {
           newPlayerLink={newPlayerLink}
         />
       )}
-      {component === PresenterComponent.CreateAssignment && (
+      {!loading && component === PresenterComponent.CreateAssignment && (
         <CreateAssignmentDoodles
           action={goToNextPlayerAssignment}
           players={playersRef.current}
         />
       )}
-      {component === PresenterComponent.FirstGuess && (
+      {!loading && component === PresenterComponent.FirstGuess && (
         <FirstGuess
           action={finishFirstGuess}
           players={playersRef.current}
           playerAssignmentIndex={playerAssignmentIndex}
         />
       )}
-      {component === PresenterComponent.SecondGuess && (
+      {!loading && component === PresenterComponent.SecondGuess && (
         <SecondGuess
           action={finishSecondGuess}
           players={playersRef.current}
@@ -380,7 +380,7 @@ export default function Doodler() {
           options={options}
         />
       )}
-      {component === PresenterComponent.Results && (
+      {!loading && component === PresenterComponent.Results && (
         <Results message={resultsMessage} players={playersRef.current} playerAssignmentIndex={playerAssignmentIndex} />
       )}
     </div>

@@ -16,7 +16,7 @@ export default function Results({
   const playerDisplays = players.map((player) => {
     return (
       <div key={player.connectionId} className="flex-row m-3">
-        <div className="flex self-stretch justify-center">
+        <div>
           <img
             className="border-2 rounded-md border-teal-500"
             key={player.name}

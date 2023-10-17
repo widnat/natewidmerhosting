@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import Btn from "@/components/doodler/Btn";
 import { Player } from "@/types/doodler";
-import QRCode from "react-qr-code";
+import LargeImage from "../LargeImage";
+import LargeQRCode from "../LargeQrCode";
+import LargeText from "../LargeText";
+import MediumText from "../MediumText";
 
 type Props = {
   gameId: string;
@@ -23,19 +26,9 @@ export default function StartGame({
   useEffect(() => {
     var updatedPlayers = players.map((player) => {
       return (
-        <div key={player.connectionId} className="flex-col m-3">
-          <div className="flex self-stretch justify-center">
-            <img
-              className="border-2 rounded-md border-teal-500"
-              key={player.name}
-              src={player.pictureURL}
-              width={window.innerWidth * .05}
-              height={window.innerWidth * .05}
-            />
-          </div>
-          <div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
-            {player.name}
-          </div>
+        <div key={player.connectionId} className="flex flex-col items-center">
+          <LargeImage source={player.pictureURL} />
+          {player.name}
         </div>
       );
     });
@@ -43,47 +36,31 @@ export default function StartGame({
   }, [players]);
 
   return (
-    <div>
-      {gameId != '-1' && (
-        <div className="flex self-stretch w-screen justify-center">
-          <div className="flex-col space-y-3">
-            <div className="flex self-stretch justify-center">
-              Add player by using the QRCode
+    <>
+      {gameId != "-1" && (
+        <div className="flex flex-row">
+          <div className="flex flex-col items-center justify-center w-2/3 pb-36 bg-gradient-to-l from-cyan-200 to-blue-200 h-screen">
+            <div className="my-10 mx-10">
+              <LargeText text="Add player by using the QRCode" />
             </div>
-            <div className="flex self-stretch justify-center">
-              Or enter <div className="text-cyan-500 ml-2 mb-5 underline">{newPlayerLink}</div>
-            </div>
-            <div
-              style={{
-                height: "auto",
-                margin: "0 auto",
-                maxWidth: window.innerWidth * .25,
-                width: "100%",
-              }}
-            >
-              <QRCode
-                size={256}
-                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                value={newPlayerLink}
-                viewBox={`0 0 256 256`}
-              />
-            </div>
-            <div className="flex self-stretch justify-center">
-              There must be at least two players to start a game
-            </div>
-            <div className="flex self-stretch justify-center">
+            <LargeQRCode link={newPlayerLink} />
+            <div className="mt-10">
               <Btn action={() => action()} text="Start Game" />
             </div>
-
-            <div className="flex self-stretch justify-center text-4xl font-bold">
-              Players that have joined
+            <div className="mt-10 text-cyan-800 text-lg underline">
+              {newPlayerLink}
             </div>
-            <div className="flex self-stretch justify-center max-w-7xl">
+          </div>
+          <div className="flex flex-col items-center justify-center w-full pb-36 bg-gradient-to-r from-cyan-200 to-blue-200 h-screen">
+            <div className="my-10 mx-10">
+              <LargeText text="Players that have joined" />
+            </div>
+            <div className="">
               <div className="flex flex-wrap">{playerDisplays}</div>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
