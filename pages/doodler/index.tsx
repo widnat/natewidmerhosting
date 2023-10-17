@@ -68,7 +68,7 @@ export default function Doodler() {
     if (msg) {
       const msgAsJson = JSON.parse(msg);
       const message = msgAsJson as Message;
-      if (gameIdRef.current !== message.recipientConnectionId) {
+      if (gameIdRef.current && gameIdRef.current !== message.recipientConnectionId) {
         console.log(
           `setting game id. messagetype:${message.type} old gameId:${gameIdRef.current} new gameId:${message.recipientConnectionId}`
         );
