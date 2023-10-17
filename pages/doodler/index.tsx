@@ -350,7 +350,6 @@ export default function Doodler() {
   return (
     <div>
       <NavBar />
-      <Title title="Doodler" page="" />
       {loading && <Spinner message="loading..." />}
       {component === PresenterComponent.StartGame && (
         <StartGame
@@ -382,7 +381,7 @@ export default function Doodler() {
         />
       )}
       {component === PresenterComponent.Results && (
-        <Results message={resultsMessage} players={playersRef.current} playerAssignmentIndex={playerAssignmentIndex} options={options} />
+        <Results message={resultsMessage} players={playersRef.current} playerAssignmentIndex={playerAssignmentIndex} />
       )}
     </div>
   );

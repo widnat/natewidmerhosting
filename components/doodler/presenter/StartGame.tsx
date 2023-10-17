@@ -29,8 +29,8 @@ export default function StartGame({
               className="border-2 rounded-md border-teal-500"
               key={player.name}
               src={player.pictureURL}
-              width={window.innerWidth * .15}
-              height={window.innerWidth * .15}
+              width={window.innerWidth * .05}
+              height={window.innerWidth * .05}
             />
           </div>
           <div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
