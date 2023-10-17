@@ -69,8 +69,8 @@ export default function SecondGuess({
 					<img
 						className="border-2 rounded-md border-teal-500"
 						src={players[playerAssignmentIndex].assignment.drawingURL}
-						width={200}
-						height={200}
+						width={window.innerWidth * .25}
+						height={window.innerWidth * .25}
 					/>
 				</div>
 
