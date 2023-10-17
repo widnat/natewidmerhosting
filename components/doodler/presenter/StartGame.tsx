@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import Btn from "@/components/doodler/Btn";
 import { Player } from "@/types/doodler";
 import LargeImage from "../LargeImage";
-import LargeQRCode from "../LargeQrCode";
 import LargeText from "../LargeText";
-import MediumText from "../MediumText";
+import QRCode from "react-qr-code";
 
 type Props = {
   gameId: string;
@@ -43,7 +42,11 @@ export default function StartGame({
             <div className="my-10 mx-10">
               <LargeText text="Add player by using the QRCode" />
             </div>
-            <LargeQRCode link={newPlayerLink} />
+              <QRCode
+                size={300}
+                value={newPlayerLink}
+                viewBox={`0 0 300 300`}
+              />
             <div className="mt-10">
               <Btn action={() => action()} text="Start Game" />
             </div>
