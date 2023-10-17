@@ -148,7 +148,9 @@ export default function Doodler() {
     if (playersRef.current.length > 1) {
       setLoading(true);
       axios
-        .get(`${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`)
+        .get(`${GET_ASSIGNMENTS_LAMBDA}${playersRef.current.length}`, {
+          signal: AbortSignal.timeout(10000),
+        })
         .then(function (response: any) {
           let chatGptResponse = response.data as ChatGptResponse;
           if (chatGptResponse.success) {
@@ -278,10 +280,14 @@ export default function Doodler() {
     setComponent(PresenterComponent.Results);
     setTimeout(function () {
       console.log("in FinishSecondGuess");
-      var playerAssignment = playersRef.current[playerAssignmentIndex].assignment;
+      var playerAssignment =
+        playersRef.current[playerAssignmentIndex].assignment;
       var updatedPlayers = new Array<Player>();
       playersRef.current.forEach((player) => {
-        player.score += getPoints(player.firstGuess, playerAssignment.assignment);
+        player.score += getPoints(
+          player.firstGuess,
+          playerAssignment.assignment
+        );
         player.score +=
           player.secondGuess === playerAssignment.assignment ? 100 : 0;
         updatedPlayers.push(player);
@@ -381,7 +387,11 @@ export default function Doodler() {
         />
       )}
       {!loading && component === PresenterComponent.Results && (
-        <Results message={resultsMessage} players={playersRef.current} playerAssignmentIndex={playerAssignmentIndex} />
+        <Results
+          message={resultsMessage}
+          players={playersRef.current}
+          playerAssignmentIndex={playerAssignmentIndex}
+        />
       )}
     </div>
   );
