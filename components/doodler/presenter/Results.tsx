@@ -27,7 +27,7 @@ export default function Results({
           <VerySmallImage source={player.pictureURL} />
           <div className="flex flex-col">
             <MediumText text={`${player.name}s Score: ${player.score}`} />
-            <MediumText text={`Correct Answer: ${player.firstGuess}`} />
+            <MediumText text={`Correct Answer: ${player.assignment.assignment}`} />
           </div>
         </div>
       );
