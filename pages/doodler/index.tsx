@@ -18,8 +18,8 @@ import { PresenterComponent, MessageType } from "@/enums/doodler";
 
 export default function Doodler() {
   const sendMessageAction = "sendmessage";
-  const PLAYER_ADDRESS = 'http://localhost:3000/doodler'; //locally
-  // const PLAYER_ADDRESS = "https://natewidmer.com/doodler"; //production
+  // const PLAYER_ADDRESS = 'http://localhost:3000/doodler'; //locally
+  const PLAYER_ADDRESS = "https://natewidmer.com/doodler"; //production
   const WS_ADDRESS =
     "wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/";
   const GET_ASSIGNMENTS_LAMBDA =
