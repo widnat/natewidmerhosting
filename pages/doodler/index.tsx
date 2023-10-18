@@ -18,8 +18,8 @@ import { PresenterComponent, MessageType } from "@/enums/doodler";
 
 export default function Doodler() {
   const sendMessageAction = "sendmessage";
-  const PLAYER_ADDRESS = 'http://localhost:3000/doodler'; //locally
-  // const PLAYER_ADDRESS = "https://natewidmer.com/doodler"; //production
+  // const PLAYER_ADDRESS = 'http://localhost:3000/doodler'; //locally
+  const PLAYER_ADDRESS = "https://natewidmer.com/doodler"; //production
   const WS_ADDRESS =
     "wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/";
   const GET_ASSIGNMENTS_LAMBDA =
@@ -270,29 +270,30 @@ export default function Doodler() {
     });
   }
 
-  function finishSecondGuess() {
+  function showResults() {
     if (playerAssignmentIndex == playersRef.current.length - 1)
       setResultsMessage("Here are the final results!");
 
     setComponent(PresenterComponent.Results);
-    setTimeout(function () {
-      console.log("in FinishSecondGuess");
-      var playerAssignment =
-        playersRef.current[playerAssignmentIndex].assignment;
-      var updatedPlayers = new Array<Player>();
-      playersRef.current.forEach((player) => {
-        player.score += getPoints(
-          player.firstGuess,
-          playerAssignment.assignment
-        );
-        player.score +=
-          player.secondGuess === playerAssignment.assignment ? 100 : 0;
-        updatedPlayers.push(player);
-      });
-      setPlayers(updatedPlayers);
-      if (playerAssignmentIndex < playersRef.current.length - 1)
-        goToNextPlayerAssignment();
-    }, 15000);
+  }
+
+  function StartNextRound() {
+    console.log("in StartNextRound");
+    var playerAssignment =
+      playersRef.current[playerAssignmentIndex].assignment;
+    var updatedPlayers = new Array<Player>();
+    playersRef.current.forEach((player) => {
+      player.score += getPoints(
+        player.firstGuess,
+        playerAssignment.assignment
+      );
+      player.score +=
+        player.secondGuess === playerAssignment.assignment ? 100 : 0;
+      updatedPlayers.push(player);
+    });
+    setPlayers(updatedPlayers);
+    if (playerAssignmentIndex < playersRef.current.length - 1)
+      goToNextPlayerAssignment();
   }
 
   function getPoints(guess: string, answer: string) {
@@ -377,13 +378,14 @@ export default function Doodler() {
       )}
       {!loading && component === PresenterComponent.SecondGuess && (
         <SecondGuess
-          action={finishSecondGuess}
+          action={showResults}
           players={playersRef.current}
           playerAssignmentIndex={playerAssignmentIndex}
         />
       )}
       {!loading && component === PresenterComponent.Results && (
         <Results
+          action={StartNextRound}
           message={resultsMessage}
           players={playersRef.current}
           playerAssignmentIndex={playerAssignmentIndex}

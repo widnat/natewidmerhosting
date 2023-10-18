@@ -4,12 +4,14 @@ import { Player } from "@/types/doodler";
 import SmallImage from "../SmallImage";
 
 type Props = {
+  action: any;
   players: Player[];
   message: string;
   playerAssignmentIndex: number;
 };
 
 export default function Results({
+  action,
   players,
   message,
   playerAssignmentIndex,
