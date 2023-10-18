@@ -8,9 +8,8 @@ import {
   DoodleAssignment,
 } from "@/types/doodler";
 import StartGame from "@/components/doodler/presenter/StartGame";
-import Spinner from "@/components/Spinner";
+import Spinner from "@/components/doodler/Spinner";
 import NavBar from "@/components/NavBar/NavBar";
-import Title from "@/components/Title";
 import CreateAssignmentDoodles from "@/components/doodler/presenter/CreateAssignmentDoodles";
 import FirstGuess from "@/components/doodler/presenter/FirstGuess";
 import SecondGuess from "@/components/doodler/presenter/SecondGuess";
@@ -19,9 +18,8 @@ import { PresenterComponent, MessageType } from "@/enums/doodler";
 
 export default function Doodler() {
   const sendMessageAction = "sendmessage";
-  //const PLAYER_ADDRESS = 'http://localhost:3000/doodler'; //locally
-  const PLAYER_ADDRESS = "https://natewidmer.com/doodler"; //production
-  // const PLAYER_ADDRESS = 'https://doodler.player.natewidmer.com'; //angular player app
+  const PLAYER_ADDRESS = 'http://localhost:3000/doodler'; //locally
+  // const PLAYER_ADDRESS = "https://natewidmer.com/doodler"; //production
   const WS_ADDRESS =
     "wss://qqhbc125y4.execute-api.us-east-2.amazonaws.com/production/";
   const GET_ASSIGNMENTS_LAMBDA =
@@ -42,7 +40,6 @@ export default function Doodler() {
     _setGameId(newGameId);
   };
   const newPlayerLink = `${PLAYER_ADDRESS}/${gameIdRef.current}/player`;
-  //const newPlayerLink = `${PLAYER_ADDRESS}/${gameId}` for angular
   const [playerAssignmentIndex, setPlayerAssignmentIndex] = useState(-1);
   const [component, setComponent] = useState(PresenterComponent.LoadingGame);
   const [loading, setLoading] = useState(true);
@@ -383,7 +380,6 @@ export default function Doodler() {
           action={finishSecondGuess}
           players={playersRef.current}
           playerAssignmentIndex={playerAssignmentIndex}
-          options={options}
         />
       )}
       {!loading && component === PresenterComponent.Results && (

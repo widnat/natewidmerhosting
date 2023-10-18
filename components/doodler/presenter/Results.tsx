@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Btn from "@/components/doodler/Btn";
 import { Player } from "@/types/doodler";
+import SmallImage from "../SmallImage";
 
 type Props = {
   players: Player[];
@@ -16,15 +17,7 @@ export default function Results({
   const playerDisplays = players.map((player) => {
     return (
       <div key={player.connectionId} className="flex-row m-3">
-        <div>
-          <img
-            className="border-2 rounded-md border-teal-500"
-            key={player.name}
-            src={player.pictureURL}
-            width={window.innerWidth * 0.05}
-            height={window.innerWidth * 0.05}
-          />
-        </div>
+        <SmallImage source={player.pictureURL} />
         <div className="flex mt-3 self-stretch justify-center text-lg text-black font-bold break-normal">
           {`${player.name}s guess: ${player.firstGuess}`}
         </div>

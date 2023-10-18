@@ -1,15 +1,16 @@
 import React from "react";
 
 type Props = {
-	source: string;
+  source: string;
 };
 
 export default function SmallImage({ source }: Props) {
-	return (
-		<img
-              src={source}
-              width={window.innerWidth * .05}
-              height={window.innerWidth * .05}
-            />
-	);
+  return (
+    <img
+      className="border-2 rounded-md border-teal-500 m-2"
+      src={source}
+      width={window.innerWidth * 0.1}
+      height={window.innerWidth * 0.1}
+    />
+  );
 }

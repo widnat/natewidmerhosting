@@ -103,7 +103,7 @@ export default function DrawingArea({ action, actionText }: Props) {
         <div className="flex self-stretch justify-center mb-2">
           <Btn action={submit} text={actionText} />
           <div className="mx-3"></div>
-          <Btn action={clear} text="Clear canvas" />
+          <Btn action={clear} text="Clear Canvas" />
         </div>
         <div className="flex self-stretch justify-center">
           <canvas
@@ -111,7 +111,7 @@ export default function DrawingArea({ action, actionText }: Props) {
             onMouseDown={onMouseDown}
             width={canvasWidth}
             height={canvasHeight}
-            className="border border-teal-300 rounded-md"
+            className="border bg-white rounded-md"
           />
         </div>
         <div className="flex-row mb-4">
@@ -119,7 +119,7 @@ export default function DrawingArea({ action, actionText }: Props) {
             <input
               onChange={(e) => setLineWidth(e.target.valueAsNumber)}
               value={lineWidth}
-              className="w-40 mr-1 cursor-pointer accent-teal-500 rounded-full"
+              className="w-40 mr-1 cursor-pointer rounded-full"
               type="range"
               min="4"
               max="20"

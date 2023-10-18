@@ -1,80 +1,74 @@
 import { Player } from "../../../types/doodler";
 import { useEffect, useState } from "react";
+import LargeImage from "../LargeImage";
+import LargeText from "../LargeText";
+import SmallImage from "../SmallImage";
 
 type Props = {
-	action: any;
-	playerAssignmentIndex: number;
-	players: Player[];
+  action: any;
+  playerAssignmentIndex: number;
+  players: Player[];
 };
 
 export default function FirstGuess({
-	action,
-	players,
-	playerAssignmentIndex,
+  action,
+  players,
+  playerAssignmentIndex,
 }: Props) {
-	const [playerDisplays, setPlayerDisplays] = useState(
-		new Array<JSX.Element>()
-	);
-	const [message, setMessage] = useState("Make your best guess!");
+  const [playerDisplays, setPlayerDisplays] = useState(
+    new Array<JSX.Element>()
+  );
+  const [message, setMessage] = useState("Make your best guess!");
 
-	useEffect(() => {
-		var numFinishedPlayers = 0;
-		var updatedPlayers = players.map((player) => {
-			if (player.firstGuess) ++numFinishedPlayers;
+  useEffect(() => {
+    var numFinishedPlayers = 0;
+    var updatedPlayers = players.map((player) => {
+      if (player.firstGuess) ++numFinishedPlayers;
 
-			return (
-				<div key={player.connectionId}>
-					{player.firstGuess && (
-						<div className="m-3">
-							<img
-								className="border-2 rounded-md border-teal-500"
-								key={player.name}
-								src={player.pictureURL}
-								width={window.innerWidth * .05}
-								height={window.innerWidth * .05}
-							/>
-							<div className="flex mt-3 self-stretch justify-center text-lg text-teal-700 uppercase font-extrabold">
-								{player.name} Finished!
-							</div>
-						</div>
-					)}
-				</div>
-			);
-		});
+      return (
+        <div key={player.connectionId}>
+          {player.firstGuess && (
+            <div
+              key={player.connectionId}
+              className="flex flex-col items-center"
+            >
+              <SmallImage source={player.pictureURL} />
+              {player.name} Finished!
+            </div>
+          )}
+        </div>
+      );
+    });
 
-		setPlayerDisplays(updatedPlayers);
-		if (numFinishedPlayers + 1 === players.length) {
-			console.log("first guess finished");
-			setMessage("All finished!");
-			setTimeout(function () {
-				setMessage("On to the next guess!");
-			}, 1500);
-			setTimeout(function () {
-				action();
-			}, 1500);
-		}
-	}, [players]);
+    setPlayerDisplays(updatedPlayers);
+    if (numFinishedPlayers + 1 === players.length) {
+      console.log("first guess finished");
+      setMessage("All finished!");
+      setTimeout(function () {
+        setMessage("On to the next guess!");
+      }, 4000);
+      setTimeout(function () {
+        action();
+      }, 4000);
+    }
+  }, [players]);
 
-	return (
-		<div className="flex self-stretch w-screen justify-center">
-			<div className="flex-col space-y-3">
-				<div className="flex self-stretch  justify-center text-3xl font-bold pt-16">{message}</div>
-				<div className="flex self-stretch justify-center">
-					<img
-						className="border-2 rounded-md border-teal-500"
-						src={players[playerAssignmentIndex].assignment.drawingURL}
-						width={window.innerWidth * .25}
-						height={window.innerWidth * .25}
-					/>
-				</div>
-
-				<div className="flex self-stretch justify-center text-3xl font-bold pt-16">
-					Players finished with first guess
-				</div>
-				<div className="flex self-stretch justify-center max-w-7xl">
-					<div className="flex flex-wrap">{playerDisplays}</div>
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className="flex flex-row">
+      <div className="flex flex-col items-center justify-center w-2/3 pb-36 bg-gradient-to-l from-cyan-200 to-blue-200 h-screen">
+        <div className="my-10 mx-10">
+          <LargeText text={message} />
+        </div>
+        <LargeImage
+          source={players[playerAssignmentIndex].assignment.drawingURL}
+        />
+      </div>
+      <div className="flex flex-col items-center justify-center w-full pb-36 bg-gradient-to-r from-cyan-200 to-blue-200 h-screen">
+        <div className="my-10 mx-10">
+          <LargeText text="Players finished with first guess" />
+        </div>
+        <div className="flex flex-wrap">{playerDisplays}</div>
+      </div>
+    </div>
+  );
 }

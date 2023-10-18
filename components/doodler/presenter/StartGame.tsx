@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Btn from "@/components/doodler/Btn";
 import { Player } from "@/types/doodler";
-import LargeImage from "../LargeImage";
 import LargeText from "../LargeText";
 import QRCode from "react-qr-code";
+import SmallImage from "../SmallImage";
 
 type Props = {
   gameId: string;
@@ -26,7 +26,7 @@ export default function StartGame({
     var updatedPlayers = players.map((player) => {
       return (
         <div key={player.connectionId} className="flex flex-col items-center">
-          <LargeImage source={player.pictureURL} />
+          <SmallImage source={player.pictureURL} />
           {player.name}
         </div>
       );
@@ -42,11 +42,7 @@ export default function StartGame({
             <div className="my-10 mx-10">
               <LargeText text="Add player by using the QRCode" />
             </div>
-              <QRCode
-                size={300}
-                value={newPlayerLink}
-                viewBox={`0 0 300 300`}
-              />
+            <QRCode size={300} value={newPlayerLink} viewBox={`0 0 300 300`} />
             <div className="mt-10">
               <Btn action={() => action()} text="Start Game" />
             </div>
@@ -58,9 +54,7 @@ export default function StartGame({
             <div className="my-10 mx-10">
               <LargeText text="Players that have joined" />
             </div>
-            <div className="">
-              <div className="flex flex-wrap">{playerDisplays}</div>
-            </div>
+            <div className="flex flex-wrap">{playerDisplays}</div>
           </div>
         </div>
       )}
