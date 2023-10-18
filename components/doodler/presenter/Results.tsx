@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import Btn from "@/components/doodler/Btn";
 import { Player } from "@/types/doodler";
 import SmallImage from "../SmallImage";
+import LargeText from "../LargeText";
+import LargeImage from "../LargeImage";
+import MediumText from "../MediumText";
+import VerySmallImage from "../VerySmallImage";
 
 type Props = {
   action: any;
@@ -17,55 +21,48 @@ export default function Results({
   playerAssignmentIndex,
 }: Props) {
   const playerDisplays = players.map((player) => {
-    return (
-      <div key={player.connectionId} className="flex-row m-3">
-        <SmallImage source={player.pictureURL} />
-        <div className="flex mt-3 self-stretch justify-center text-lg text-black font-bold break-normal">
-          {`${player.name}s guess: ${player.firstGuess}`}
+    if (player.connectionId == players[playerAssignmentIndex].connectionId) {
+      return (
+        <div key={player.connectionId} className="flex flex-row m-2">
+          <VerySmallImage source={player.pictureURL} />
+          <div className="flex flex-col">
+            <MediumText text={`${player.name}s Score: ${player.score}`} />
+            <MediumText text={`Correct Answer: ${player.firstGuess}`} />
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+    else {
+      return (
+        <div key={player.connectionId} className="flex flex-row m-2">
+          <VerySmallImage source={player.pictureURL} />
+          <div className="flex flex-col">
+            <MediumText text={`${player.name}s Score: ${player.score}`} />
+            <MediumText text={`Guess: ${player.firstGuess}`} />
+          </div>
+        </div>
+      );
+    }
   });
 
   return (
-    <div className="flex-col self-stretch w-screen justify-center">
-      <div>
-        <div className="flex mt-3 self-stretch justify-center text-2xl text-black uppercase font-extrabold">
-          {players[playerAssignmentIndex].name}
-          <div className="ml-3 text-lg lowercase font-bold">
-            {"drew this AWESOME doodle!!!"}
-          </div>
-        </div>
-        <div className="flex self-stretch justify-center">
-          <img
-            className="border-2 rounded-md border-teal-500"
-            key={players[playerAssignmentIndex].name}
-            src={players[playerAssignmentIndex].pictureURL}
-            width={window.innerWidth * 0.25}
-            height={window.innerWidth * 0.25}
+    <div className="flex flex-row">
+      <div className="flex flex-col items-center justify-center w-2/3 pb-36 bg-gradient-to-l from-cyan-200 to-blue-200 h-screen">
+        <div className="my-10 mx-10">
+          <LargeText
+            text={`${players[playerAssignmentIndex].name} drew this AWESOME doodle!!!`}
           />
         </div>
+        <LargeImage source={players[playerAssignmentIndex].pictureURL} />
+        <div className="mt-10">
+          <Btn action={() => action()} text="Continue" />
+        </div>
       </div>
-
-      <div className="flex-row self-stretch justify-center  space-y-3">
-        <div className="flex self-stretch justify-center text-4xl font-bold pt-16">
-          {message}
+      <div className="flex flex-col items-center justify-center w-full pb-36 bg-gradient-to-r from-cyan-200 to-blue-200 h-screen">
+        <div className="my-10 mx-10">
+          <LargeText text={message} />
         </div>
-        <div className="flex self-stretch justify-center max-w-7xl">
-          <div className="flex self-stretch justify-center">
-            <img
-              className="border-2 rounded-md border-teal-500"
-              key={players[playerAssignmentIndex].name}
-              src={players[playerAssignmentIndex].pictureURL}
-              width={window.innerWidth * 0.05}
-              height={window.innerWidth * 0.05}
-            />
-          </div>
-          <div className="flex mt-3 self-stretch justify-center text-lg text-black font-bold break-normal">
-            {`Answered by ${players[playerAssignmentIndex].name}: ${players[playerAssignmentIndex].firstGuess}`}
-          </div>
-        </div>
-        <div className="flex flex-wrap">{playerDisplays}</div>
+        <div className="flex flex-col items-start self-stretch">{playerDisplays}</div>
       </div>
     </div>
   );

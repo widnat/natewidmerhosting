@@ -22,7 +22,7 @@ export default function JoinGame({ action }: Props) {
     <>
       <div className="flex h-screen justify-center items-center  bg-gradient-to-l from-cyan-200 to-blue-200">
         {!waiting && (
-          <div className="pt-10">
+          <div className="pt-5">
             <BasicInput updateInput={setPlayerName} text="Enter your name" />
             <DrawingArea action={doneDrawing} actionText="Join Game" />
           </div>
